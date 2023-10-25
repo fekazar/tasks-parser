@@ -4,7 +4,10 @@ import model.Task
 import org.jsoup.Jsoup
 import repository.TaskRepository
 
-class TaskService(val taskRepository: TaskRepository) {
+class TaskService(
+    private val taskRepository: TaskRepository,
+    private val notificationService: NotificationService
+) {
     fun getTasksForQuery(query: String) = Jsoup.connect("https://freelance.habr.com/tasks?q=$query")
         .get()
         .body()
@@ -28,11 +31,12 @@ class TaskService(val taskRepository: TaskRepository) {
     fun checkUpdates() {
         // todo: load queries from file
         val queries = listOf("java+kotlin")
-
-        queries.forEach { task ->
-            // todo: send message for every not persisted task
-            val tasks = getTasksForQuery(task)
-                .filter { taskRepository.findById(it.id) == null }
-        }
+        queries.asSequence()
+            .flatMap { getTasksForQuery(it) }
+            .filter { taskRepository.findById(it.id) == null }
+            .forEach {
+                notificationService.notifyAbout(it)
+                taskRepository.save(it)
+            }
     }
 }
