@@ -1,8 +1,7 @@
-package service
+package edu.parsing
 
-import model.Task
 import org.jsoup.Jsoup
-import repository.TaskRepository
+import edu.parsing.repository.TaskRepository
 
 class TaskService(
     private val taskRepository: TaskRepository,
@@ -32,7 +31,7 @@ class TaskService(
         // todo: load queries from file
         val queries = listOf("java+kotlin")
         queries.asSequence()
-            .flatMap { getTasksForQuery(it) }
+            .flatMap { getTasksForQuery(it) } // todo: delay to not get 429
             .filter { taskRepository.findById(it.id) == null }
             .forEach {
                 notificationService.notifyAbout(it)

@@ -1,6 +1,4 @@
-package service
-
-import model.Task
+package edu.parsing
 
 interface NotificationService {
     fun notifyAbout(task: Task)
