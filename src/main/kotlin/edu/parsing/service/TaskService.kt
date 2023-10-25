@@ -30,7 +30,7 @@ class TaskService(
 
     fun checkUpdates() {
         // todo: load queries from file
-        val queries = listOf("java+kotlin")
+        val queries = listOf("java+kotlin", "php")
         queries.asSequence()
             .flatMap { getTasksForQuery(it) } // todo: delay to not get 429
             .filter { taskRepository.findById(it.id) == null }

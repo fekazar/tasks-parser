@@ -1,9 +1,18 @@
 package edu.parsing.repository
 
 import edu.parsing.model.Task
+import org.apache.commons.csv.CSVFormat
+import org.apache.commons.csv.CSVParser
+import org.apache.commons.csv.CSVPrinter
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileReader
+import java.io.FileWriter
 import java.io.PrintWriter
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
 
 // todo: escape comas in header
@@ -17,16 +26,16 @@ class CsvRepository(val fileName: String) : TaskRepository {
         const val PRICE = "price"
     }
 
-    private val csvWriter = PrintWriter(
-        Files.newOutputStream(
-        Path.of(fileName), StandardOpenOption.CREATE, StandardOpenOption.APPEND),
-        false
-    )
+    private val format = CSVFormat.Builder.create()
+        .setHeader(ID, HEADER, PRICE)
+        .setSkipHeaderRecord(true)
+        .build()
 
-    private val tasks: MutableMap<Int, Task> = Files.readAllLines(Path.of(fileName))
-        .asSequence()
-        .drop(1) // Drop csv header
-        .map { it.split(",") }
+    private val csvWriter = CSVPrinter(BufferedWriter(FileWriter(fileName, true)), format)
+
+    // todo: close resources
+    private val tasks = CSVParser(BufferedReader(FileReader(fileName)), format)
+        .records
         .map { Task(it[0].toInt(), it[1], it[2].toIntOrNull()) }
         .groupingBy { it.id }
         .reduce { _, _, el -> el }
@@ -40,10 +49,7 @@ class CsvRepository(val fileName: String) : TaskRepository {
 
         tasks[task.id] = task
 
-        if (tasks.isEmpty())
-            csvWriter.println("$ID,$HEADER,$PRICE")
-        csvWriter.println(task.toCsvLine())
-
+        csvWriter.printRecord(task.id, task.header, task.price)
         csvWriter.flush()
         return task
     }

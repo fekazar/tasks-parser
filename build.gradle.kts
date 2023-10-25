@@ -12,6 +12,8 @@ repositories {
 
 dependencies {
     implementation("org.jsoup:jsoup:1.16.2")
+    implementation("org.apache.commons:commons-csv:1.10.0")
+
     testImplementation(kotlin("test"))
 }
 
