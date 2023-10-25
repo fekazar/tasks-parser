@@ -1,6 +1,6 @@
 package edu.parsing.repository
 
-import edu.parsing.Task
+import edu.parsing.model.Task
 
 interface TaskRepository {
     fun findById(id: Int): Task?

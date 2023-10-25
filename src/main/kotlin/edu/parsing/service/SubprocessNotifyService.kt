@@ -1,4 +1,6 @@
-package edu.parsing
+package edu.parsing.service
+
+import edu.parsing.model.Task
 
 // todo: make html formatting
 fun Task.toTextMessage() = "'New task: $this'"

@@ -1,5 +1,6 @@
-package edu.parsing
+package edu.parsing.service
 
+import edu.parsing.model.Task
 import org.jsoup.Jsoup
 import edu.parsing.repository.TaskRepository
 

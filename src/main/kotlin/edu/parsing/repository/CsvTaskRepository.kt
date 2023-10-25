@@ -1,6 +1,6 @@
 package edu.parsing.repository
 
-import edu.parsing.Task
+import edu.parsing.model.Task
 import java.io.PrintWriter
 import java.nio.file.Files
 import java.nio.file.Path
