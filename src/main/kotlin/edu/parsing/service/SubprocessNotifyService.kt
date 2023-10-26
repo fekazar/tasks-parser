@@ -2,6 +2,7 @@ package edu.parsing.service
 
 import edu.parsing.model.Task
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 fun Task.toTextMessage() = """
     <b>$header </b>
@@ -18,7 +19,9 @@ class SubprocessNotifyService : NotificationService {
                 .directory(null)
                 .redirectInput(ProcessBuilder.Redirect.INHERIT)
                 .redirectOutput(ProcessBuilder.Redirect.INHERIT)
+                .redirectOutput(ProcessBuilder.Redirect.INHERIT)
                 .start()
+                .waitFor(10, TimeUnit.SECONDS)
 
             Thread.sleep(3000)
         }
