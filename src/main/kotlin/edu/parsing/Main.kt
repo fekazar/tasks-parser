@@ -21,5 +21,9 @@ fun main(args: Array<String>) {
     val notificationService = SubprocessNotifyService()
 
     val taskService = TaskService(taskRepository, queryRepository, notificationService)
-    taskService.checkUpdates()
+
+    while (true) {
+        taskService.checkUpdates()
+        Thread.sleep(1000L * (cliArgs["--timeout"]?.toInt() ?: 20))
+    }
 }
