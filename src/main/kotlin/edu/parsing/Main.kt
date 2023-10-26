@@ -4,6 +4,7 @@ import edu.parsing.repository.CsvRepository
 import edu.parsing.repository.FileQueryRepository
 import edu.parsing.service.SubprocessNotifyService
 import edu.parsing.service.TaskService
+import java.util.logging.Logger
 
 // Started with chrono
 fun main(args: Array<String>) {
@@ -22,7 +23,10 @@ fun main(args: Array<String>) {
 
     val taskService = TaskService(taskRepository, queryRepository, notificationService)
 
+    val logger = Logger.getLogger("Main logger")
+
     while (true) {
+        logger.info("Parsing...")
         taskService.checkUpdates()
         Thread.sleep(1000L * (cliArgs["--timeout"]?.toInt() ?: 20))
     }
