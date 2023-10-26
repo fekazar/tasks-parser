@@ -1,11 +1,13 @@
 package edu.parsing.service
 
 import edu.parsing.model.Task
+import edu.parsing.repository.QueryRepository
 import org.jsoup.Jsoup
 import edu.parsing.repository.TaskRepository
 
 class TaskService(
     private val taskRepository: TaskRepository,
+    private val queryRepository: QueryRepository,
     private val notificationService: NotificationService
 ) {
     fun getTasksForQuery(query: String) = Jsoup.connect("https://freelance.habr.com/tasks?q=$query")
@@ -30,9 +32,9 @@ class TaskService(
 
     fun checkUpdates() {
         // todo: load queries from file
-        val queries = listOf("java+kotlin", "php")
+        val queries = queryRepository.findAll()
         queries.asSequence()
-            .flatMap { getTasksForQuery(it) } // todo: delay to not get 429
+            .flatMap { getTasksForQuery(it.text.replace(" ", "+")) } // todo: delay to not get 429
             .filter { taskRepository.findById(it.id) == null }
             .forEach {
                 notificationService.notifyAbout(it)

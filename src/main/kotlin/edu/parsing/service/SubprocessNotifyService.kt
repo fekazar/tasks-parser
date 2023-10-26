@@ -3,7 +3,6 @@ package edu.parsing.service
 import edu.parsing.model.Task
 import java.util.concurrent.Executors
 
-// todo: make html formatting
 fun Task.toTextMessage() = """
     <b>$header </b>
     <b>Цена: </b> $price

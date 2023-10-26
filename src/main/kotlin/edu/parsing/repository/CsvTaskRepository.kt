@@ -6,17 +6,8 @@ import org.apache.commons.csv.CSVParser
 import org.apache.commons.csv.CSVPrinter
 import java.io.BufferedReader
 import java.io.BufferedWriter
-import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
-import java.io.PrintWriter
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
-import java.nio.file.StandardOpenOption
-
-// todo: escape comas in header
-fun Task.toCsvLine() = "${this.id},${this.header},${this.price}"
 
 // Writes in format: id,header,price
 class CsvRepository(val fileName: String) : TaskRepository {
