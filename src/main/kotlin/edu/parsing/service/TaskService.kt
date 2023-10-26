@@ -2,8 +2,8 @@ package edu.parsing.service
 
 import edu.parsing.model.Task
 import edu.parsing.repository.QueryRepository
-import org.jsoup.Jsoup
 import edu.parsing.repository.TaskRepository
+import org.jsoup.Jsoup
 
 class TaskService(
     private val taskRepository: TaskRepository,
